@@ -138,11 +138,6 @@ def picked(player, entity):
             '--> '.format(player.get_name()))
         choice.lower()
 
-        """ For Future Use
-        
-        # If statement conditions of what mob type the player is facing
-        if entity.get_name() == "Zombie":"""
-
         # Condition of what the players input is
         if choice in ("attack", "a"):
             atk_dmg(player, entity)
@@ -150,66 +145,44 @@ def picked(player, entity):
             bow_dmg(player, entity)
         elif choice in ("potion", "p"):
             pot_dmg(player, entity)
-        # elif choice == "e":
-        #     entity.set_health(0)
+        elif choice == "e":
+            entity.set_health(0)
         # elif choice == "d":
         #     player.set_health(0)
         else:
-            print("That is not a possible action. Please choose a possible action.")
+            print("That is not a possible action. Please choose a possible action.\n")
             sleep(1)
             wrong = 1
 
         # Determines mob damage
-        if player.get_health() <= 0 or entity.get_health() <= 0 or wrong == 1:
+        if not player.get_health() <= 0 or entity.get_health() <= 0 or wrong == 1:
             pass
         else:
             mob_dmg(player, entity)
 
         wrong = 0
 
-        """ For Future Use
-        
-        elif entity.get_name() == "Skeleton":
-
-            # Condition of what the players input is
-            if choice in ("attack", "a"):
-                atk_dmg(player, entity)
-            elif choice in ("shoot", "s"):
-                bow_dmg(player, entity)
-            elif choice in ("potion", "p"):
-                pot_dmg(player, entity)
-            elif choice == "e":
-                entity.set_health(0)
-            elif choice == "d":
-                player.set_health(0)
-
-            # Determines mob damage
-            if player.get_health() <= 0:
-                pass
-            else:
-                mob_dmg(player, entity)
-
-        elif entity.get_name() == "Spider":
-
-            # Condition of what the players input is
-            if choice in ("attack", "a"):
-                atk_dmg(player, entity)
-            elif choice in ("shoot", "s"):
-                bow_dmg(player, entity)
-            elif choice in ("potion", "p"):
-                pot_dmg(player, entity)
-            elif choice == "e":
-                entity.set_health(0)
-            elif choice == "d":
-                player.set_health(0)
-
-            # Determines mob damage
-            if player.get_health() <= 0:
-                pass
-            else:
-                mob_dmg(player, entity)"""
-
     if entity.get_health() <= 0:  # Executed if player kills the mob
-        print("{} killed the {}".format(player.get_name(), entity.get_name()))
+        print("{} killed the {}\n".format(player.get_name(), entity.get_name()))
     elif player.get_health() <= 0:  # Executed if the player dies
         pass
+
+
+def fight(player, entity, final_room):
+    sleep(2)
+    mobs = roll(2) # rolls for different types of the same mob
+    
+    # Determines when what type of Zombie mob
+    # Current differences are just health
+    if not mobs == 1:
+        x = int(round(entity.get_health() / 4))
+        entity.set_health(entity.get_health() - x)
+
+    print("{} has encountered a {} with {} health.".format(player.get_name(), entity.get_name(), entity.get_health())) 
+    picked(player, entity) # Executes picked function for the fighting simulation
+
+    # Determines if the player dies, then returns false to leave game loop
+    if player.get_health() <= 0 or final_room:
+        return False
+
+    return True

@@ -9,27 +9,6 @@ from mobs.hostile.Spider import Spider
 from mobs.hostile.Zombie import Zombie
 from time import sleep
 
-"""
-Easy TODO:
-- Add more mob types
-- Differentiate mob accuracies
-- Add more mob attacks
-- Add final boss
-- Add mini bosses
-- Add drops
-- Add armor
-- Add uses
-
-Iffy TODO:
-- Add inventory
-- Improve accuracy choices
-- Other worlds
-
-Complex TODO:
-- Add machine learning
-- Add AI
-- Add deep learning
-"""
 
 # Initializes variables to start game and determine room number
 ingame = True

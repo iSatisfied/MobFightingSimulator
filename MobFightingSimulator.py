@@ -29,6 +29,7 @@ class MobFightingSimulator:
             
             if not fight(character, Zombie(), False):
                 game = False
+                break
 
             print("Well done {}! You have completed room one, now time for room two.".format(character.get_name()))
             room_number += 1
@@ -37,6 +38,7 @@ class MobFightingSimulator:
 
             if not fight(character, Skeleton(), False):
                 game = False
+                break
 
             print("Good job {}! You have completed room two, now time for room three.".format(character.get_name()))
             room_number += 1
@@ -45,6 +47,7 @@ class MobFightingSimulator:
 
             if not fight(character, Spider(), True):
                 game = False
+                break
 
 
         if character.get_health() <= 0:  # Executes if player dies

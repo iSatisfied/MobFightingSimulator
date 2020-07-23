@@ -17,7 +17,7 @@ def life_left(entity):
     sleep(2)
 
 
-# Function made to determine attack damage done to enemy mob
+# Function made to determine how much attack damage is done to the enemy mob
 def atk_dmg(player, entity):
     dmg = roll(100)
     if dmg <= 20:
@@ -39,11 +39,10 @@ def atk_dmg(player, entity):
         sleep(1)
         entity.attacked(5)
 
-    # Calls life left function
     life_left(entity)
 
 
-# Function made to determine bow damage done to enemy mob
+# Function made to determine how much bow damage is done to the enemy mob
 def bow_dmg(player, entity):
     dmg = roll(100)
     if dmg <= 17:
@@ -70,11 +69,10 @@ def bow_dmg(player, entity):
         sleep(1)
         entity.attacked(10)
 
-    # Calls life left function
     life_left(entity)
 
 
-# Function made to determine potion damage done to enemy mob
+# Function made to determine how much potion damage is done to the enemy mob
 def pot_dmg(player, entity):
     dmg = roll(100)
     if dmg <= 30:
@@ -84,20 +82,15 @@ def pot_dmg(player, entity):
     else:
         print("Your potion did not hit the {}. Better luck next time.".format(entity.get_name()))
 
-    # Calls life left function
     life_left(entity)
 
 
-# Function made to determine damage done to player
+# Function made to determine how much damage is done to the player
 def mob_dmg(player, entity):
     dmg = roll(100)
     if dmg <= 50:
         print("The {} missed it's attack. {} got lucky!".format(entity.get_name(), player.get_name()))
         sleep(1)
-    # elif dmg == 3:
-    #   print("The {} {} {}. They lost {} life.".format(entity.get_name(), entity.get_attack(), player.get_name(), dmg))
-    #     sleep(1)
-    #     player.attacked(dmg)
     elif dmg <= 68:
         dmg = 4
         print("The {} {} {}. They lost {} life.".format(entity.get_name(), entity.get_attack(), player.get_name(), dmg))
@@ -114,74 +107,63 @@ def mob_dmg(player, entity):
         sleep(1)
         player.attacked(dmg)
 
-    # Prints to player their current health
-    if player.get_health() <= 0:
-        print("{} has 0 life left.\n".format(player.get_name()))
-    else:
-        print("{} has {} life left.\n".format(player.get_name(), player.get_health()))
-    sleep(2)
+    life_left(player)
 
 
 # Function made for the player to pick how they want to attack the mob
-# and soon to be how the mob attacks back
 def picked(player, entity):
 
     wrong = 0
 
-    # If both the player and the enemy is alive, then this while loop continues
     while entity.get_health() >= 1 and player.get_health() >= 1:
 
-        # First asks for player input for the type of attack
         choice = input(
-            'What would {} like to do?\n Type \'attack\' or \'a\' to attack\n Type \'shoot\' or '
-            '\'s\' to shoot with your bow\n Type \'potion\' or \'p\' to throw a potion\n'
+            'What would {} like to do?\n' 
+            'Type \'attack\' or \'a\' to attack\n' 
+            'Type \'shoot\' or \'s\' to shoot with your bow\n' 
+            'Type \'potion\' or \'p\' to throw a potion\n'
             '--> '.format(player.get_name()))
         choice.lower()
 
-        # Condition of what the players input is
         if choice in ("attack", "a"):
             atk_dmg(player, entity)
         elif choice in ("shoot", "s"):
             bow_dmg(player, entity)
         elif choice in ("potion", "p"):
             pot_dmg(player, entity)
-        elif choice == "e":
-            entity.set_health(0)
-        # elif choice == "d":
-        #     player.set_health(0)
+        #elif choice == "e": # Hacky way for me to kill the enemy for testing
+        #    entity.set_health(0)
+        #elif choice == "d": # Hacky way for me to kill the player for testing
+        #    player.set_health(0)
         else:
             print("That is not a possible action. Please choose a possible action.\n")
             sleep(1)
             wrong = 1
 
-        # Determines mob damage
-        if not player.get_health() <= 0 or entity.get_health() <= 0 or wrong == 1:
+        if player.get_health() <= 0 or entity.get_health() <= 0 or wrong == 1:
             pass
         else:
             mob_dmg(player, entity)
 
         wrong = 0
 
-    if entity.get_health() <= 0:  # Executed if player kills the mob
+    if entity.get_health() <= 0: 
         print("{} killed the {}\n".format(player.get_name(), entity.get_name()))
-    elif player.get_health() <= 0:  # Executed if the player dies
+    elif player.get_health() <= 0:
         pass
 
 
 def fight(player, entity, final_room):
     sleep(2)
-    mobs = roll(2) # rolls for different types of the same mob
+    mobs = roll(2)
     
-    # Determines when what type of Zombie mob
-    # Current differences are just health
     if not mobs == 1:
         x = int(round(entity.get_health() / 4))
         entity.set_health(entity.get_health() - x)
 
     print("{} has encountered a {} with {} health.".format(player.get_name(), entity.get_name(), entity.get_health())) 
-    picked(player, entity) # Executes picked function for the fighting simulation
+    picked(player, entity)
 
-    # Determines if the player dies, then returns false to leave game loop
     if player.get_health() <= 0 or final_room:
         return False
 

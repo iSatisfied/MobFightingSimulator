@@ -13,6 +13,8 @@ from time import sleep
 # Initializes variables to start game and determine room number
 game = True
 room_number = 1
+name = ""
+character = ""
 
 
 class MobFightingSimulator:
